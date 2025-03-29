@@ -13,7 +13,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model = YOLO("best.pt").to(device)
 
 # Conecta à câmera do celular (troque o IP conforme necessário)
-URL_CAMERA = "http://192.168.3.106:8080/video"
+URL_CAMERA = "http://192.168.3.114:8080/video"
 cap = None
 while cap == None or not cap.isOpened():
     cap = cv2.VideoCapture(URL_CAMERA)
