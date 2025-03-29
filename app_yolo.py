@@ -1,10 +1,22 @@
 import cv2
-import threading
+import time
 import queue
+import threading
 from ultralytics import YOLO
 
-cap = cv2.VideoCapture("url")
-model = YOLO("best.pt")  # Seu modelo YOLOv8
+model = YOLO("best.pt")  # Seu modelo Yolo
+
+URL_CAMERA = "http://192.168.3.106:8080/video"
+cap = None
+while cap == None or not cap.isOpened():
+    cap = cv2.VideoCapture(URL_CAMERA)
+    if cap.isOpened():
+      break
+    print("Erro ao conectar com a câmera. Tentando novamente...")
+    time.sleep(5)  # Espera 5 segundos antes de tentar reconectar
+
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 frame_queue = queue.Queue(maxsize=1)  # Mantém apenas 1 frame recente
 result_queue = queue.Queue(maxsize=1)  # Guarda apenas o resultado mais recente
